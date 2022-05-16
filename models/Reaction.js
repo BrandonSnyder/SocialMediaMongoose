@@ -22,6 +22,7 @@ const reactionSchema = new Schema(
   },
   {
     toJSON: {
+      // .virtuals:true,
       getters: true,
     },
   }
@@ -31,6 +32,9 @@ reactionSchema
   .get(function(){
       return this.createdAt
   })
-  .strength(function(){
-        this.set('This is just a test in reaction.js need to change text still')
-  })
+  // .set(function(){
+  //       this.set('This is just a test in reaction.js need to change text still')
+  // })
+  const Reactions = model('reactions', reactionSchema)
+
+  module.exports = Reactions

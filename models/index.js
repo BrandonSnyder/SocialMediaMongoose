@@ -1,8 +1,8 @@
 // change book to name of database
 
-const Users = require('./Users');
-const Thoughts= require('./Thoughts')
-const Reaction = require('./Reaction')
+const User = require('./User');
+const Thoughts = require('./Thoughts');
+const Reaction = require('./Reaction');
 
 
-module.exports = { Users, Thoughts, Reaction };
+module.exports = { User, Thoughts, Reaction };

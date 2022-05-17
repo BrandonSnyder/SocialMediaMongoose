@@ -1,13 +1,27 @@
-const { Schema, Types } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
-
+const reactionSchema = new Schema({
+  reactionId: {
+    type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
+  },
+  reactionBody: {
+    type: String,
+    required: true,
+    maxLength: 280,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 const thoughtSchema = new Schema(
   {
-    // thoughtId: {
-    //   type: Schema.Types.ObjectId,
-    //   default: () => new Types.ObjectId(),
-    // },
     thoughtText: {
       type: String,
       required: true,
@@ -22,29 +36,23 @@ const thoughtSchema = new Schema(
       type: String,
       required: true,
     },
-    reactions:[ {
-      type: Schema.Types.ObjectId,
-      ref: 'reactionSchema'}
-    ],
+    reactions: [reactionSchema],
   },
-
   {
     toJSON: {
-      virtuals:true,
-      getters: true,
+      virtuals: true,
     },
   }
 );
 
+thoughtSchema
+.virtual("reactionCount")
+.get(function () {
+  return this.reactions.length;
+})
 
+const Thought = model("thought", thoughtSchema);
+// module.exports = thoughtSchema;
+// when does model get used? in line 53
 
-
-
-
-// reactionsCount
-//   .virtual('reactions')
-//   .get(function(){
-//     return this.reactions.length
-//   })
-
-module.exports = thoughtSchema;
+module.exports = Thought;

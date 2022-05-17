@@ -52,7 +52,5 @@ thoughtSchema
 })
 
 const Thought = model("thought", thoughtSchema);
-// module.exports = thoughtSchema;
-// when does model get used? in line 53
 
 module.exports = Thought;

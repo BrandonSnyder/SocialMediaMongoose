@@ -1,6 +1,9 @@
 const { User, Thoughts } = require('../models');
 
 // helper functions that aid in CRUD
+
+// all of these routes have tested sat
+
 module.exports = {
     getAllThoughts(req, res) {
         Thoughts.find()
@@ -49,10 +52,38 @@ module.exports = {
         :res.json({ message: 'thought successfully deleted' })
         )          
       },
-
-
-
-
+      addReaction(req, res) {
+        console.log('You are adding a reaction');
+        console.log(req.body);
+        Thoughts.findOneAndUpdate(
+          { _id: req.params.thoughtId },
+          { $addToSet: { reactions: req.body } },
+          { runValidators: true, new: true }
+        )
+          .then((thought) =>
+            !thought
+              ? res
+                  .status(404)
+                  .json({ message: 'No thought found with that ID :(' })
+              : res.json(thought)
+          )
+          .catch((err) => res.status(500).json(err));
+      },
+      removeReaction(req, res) {
+        Thoughts.findOneAndUpdate(
+          { _id: req.params.thoughtId },
+          { $pull: { reactions: { reactionId: req.params.reactionId } } },
+          { runValidators: true, new: true }
+        )
+          .then((student) =>
+            !student
+              ? res
+                  .status(404)
+                  .json({ message: 'No student found with that ID :(' })
+              : res.json(student)
+          )
+          .catch((err) => res.status(500).json(err));
+      },
 
 
 }
